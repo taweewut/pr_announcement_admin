@@ -57,6 +57,8 @@ Main repo: [https://github.com/taweewut/pr_announcement_admin](https://github.co
 ---
 
 ## 🌐 Live Preview (if using GitHub Pages)
+[https://taweewut.github.io/pr_announcement_admin/]
+
 
 You can configure GitHub Pages under your repo's Settings → Pages.
 
