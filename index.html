@@ -26,16 +26,12 @@
         <label class="block text-sm font-medium mb-2">ข้อความประกาศ ประชาสัมพันธ์</label>
         <textarea rows="6" class="w-full p-3 border border-gray-300 rounded resize-none" placeholder="กรุณาใส่ข้อความที่นี่">เสียงของคุณมีความหมายกับ MEA ร่วมตอบแบบสอบถาม รับ 100 MEA Point เฉพาะสมาชิก MEA Point ประเภทบ้านอยู่อาศัย ในพื้นที่กรุงเทพมหานคร นนทบุรี และสมุทรปราการ ร่วมกิจกรรมได้ถึง 31 ธันวาคม 2568 คลิกที่ event dot M E A dot th slash redeem สอบถามเพิ่มเติมที่ Facebook MEA หรือ LINE MEA Connect</textarea>
 
-        <div class="mt-3 flex gap-2">
-          <div class="flex items-center gap-2">
-            <button onclick="rewindAudio('audio-th')" class="bg-gray-300 px-2 py-1 rounded hover:bg-gray-400">«</button>
-            <button onclick="togglePlay('audio-th')" id="btn-audio-th" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">►</button>
-            <button onclick="forwardAudio('audio-th')" class="bg-gray-300 px-2 py-1 rounded hover:bg-gray-400">»</button>
-            <span id="time-audio-th" class="text-sm text-gray-700 ml-2">0:00</span>
-          </div>
-          <button class="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">แก้ไข</button>
+        <audio id="audio-th" src="MEA_PR_TH.mp3" controls class="w-full mt-2"></audio>
+        <div class="flex items-center gap-3 mt-2">
+          <span id="status-th">⏸️ ยังไม่เล่น</span>
+          <button onclick="resetAudio('th')" class="text-sm text-gray-600 hover:text-gray-800">🔁 รีเซ็ต</button>
+          <button class="ml-auto bg-gray-300 text-gray-800 px-3 py-1 rounded hover:bg-gray-400">แก้ไข</button>
         </div>
-        <audio id="audio-th" src="MEA_PR_TH.mp3"></audio>
       </div>
 
       <!-- English PR Message -->
@@ -43,16 +39,12 @@
         <label class="block text-sm font-medium mb-2">Public Relation message</label>
         <textarea rows="6" class="w-full p-3 border border-gray-300 rounded resize-none" placeholder="Please enter your message">Your voice matters to MEA. Complete a short survey and receive 100 MEA Points. Open to MEA Point members with residential accounts. Available in Bangkok, Nonthaburi, and Samut Prakan. Campaign runs until December 31st, 2025. Visit event dot M E A dot or dot th slash redeem. For more details, contact us via Facebook MEA or LINE MEA Connect.</textarea>
 
-        <div class="mt-3 flex gap-2">
-          <div class="flex items-center gap-2">
-            <button onclick="rewindAudio('audio-en')" class="bg-gray-300 px-2 py-1 rounded hover:bg-gray-400">«</button>
-            <button onclick="togglePlay('audio-en')" id="btn-audio-en" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">►</button>
-            <button onclick="forwardAudio('audio-en')" class="bg-gray-300 px-2 py-1 rounded hover:bg-gray-400">»</button>
-            <span id="time-audio-en" class="text-sm text-gray-700 ml-2">0:00</span>
-          </div>
-          <button class="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">Edit</button>
+        <audio id="audio-en" src="MEA_PR_EN.mp3" controls class="w-full mt-2"></audio>
+        <div class="flex items-center gap-3 mt-2">
+          <span id="status-en">⏸️ Not played</span>
+          <button onclick="resetAudio('en')" class="text-sm text-gray-600 hover:text-gray-800">🔁 Reset</button>
+          <button class="ml-auto bg-gray-300 text-gray-800 px-3 py-1 rounded hover:bg-gray-400">Edit</button>
         </div>
-        <audio id="audio-en" src="MEA_PR_EN.mp3"></audio>
       </div>
     </div>
 
@@ -65,8 +57,14 @@
           <input id="no-expired-checkbox" type="checkbox" class="accent-red-600" />
           <span>ไม่มีวันหมดอายุ</span>
         </label>
-        <button id="submit-button" onclick="showApprovalMessage()" class="bg-gray-400 text-white px-6 py-2 rounded cursor-not-allowed" disabled title="ท่านต้องทำการ กดฟังคำประกาศก่อนส่งขออนุมัติ">ส่งขออนุมัติ</button>
+        <div class="relative group inline-block">   
+          <button id="submit-button" onclick="showApprovalMessage()" class="bg-gray-400 text-white px-6 py-2 rounded cursor-not-allowed" disabled title="ท่านต้องทำการ กดฟังคำประกาศก่อนส่งคำประกาศ">ส่ง</button>
+          <div class="absolute left-1/2 transform -translate-x-1/2 mt-1 text-xs bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100">
+            คุณต้องกดฟังเสียงก่อนส่งคำประกาศ
+          </div>
+        </div>
       </div>
+      <button onclick="resetPlayback()" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500 mt-4">Reset</button>
     </div>
   </main>
 </main>
@@ -103,10 +101,10 @@
     const checkbox = document.getElementById('no-expired-checkbox');
     const input = document.querySelector('input[type="datetime-local"]');
     if (checkbox.checked) {
-      alert(`ระบบได้ทำการส่งคำขออนุมัติเสียงประกาศประชาสัมพันธ์แบบไม่กำหนดวันหมดอายุ`);
+      alert(`ระบบได้ทำการส่งเสียงประกาศประชาสัมพันธ์แบบไม่กำหนดวันหมดอายุ`);
     } else {
       const dateTime = input ? input.value : '';
-      alert(`ระบบได้ทำการส่งคำขออนุมัติเสียงประกาศประชาสัมพันธ์ โดยมีวันและเวลาสิ้นสุดถึง ${dateTime}`);
+      alert(`ระบบได้ทำการส่งเสียงประกาศประชาสัมพันธ์ โดยมีวันและเวลาสิ้นสุดถึง ${dateTime}`);
     }
   }
 
@@ -123,46 +121,72 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    const audio = document.getElementById('audio-th');
-    const display = document.getElementById('time-audio-th');
-    if (audio && display) {
-      audio.addEventListener('timeupdate', () => {
-        display.textContent = formatTime(audio.currentTime);
-      });
-      audio.addEventListener('play', () => {
+    const audioTh = document.getElementById('audio-th');
+    if (audioTh) {
+      audioTh.addEventListener('ended', () => {
         playedTh = true;
+        document.getElementById('status-th').textContent = '✅ ฟังจบแล้ว';
         checkSubmitEnabled();
-      });
-      audio.addEventListener('ended', () => {
-        document.getElementById('btn-audio-th').textContent = '►';
       });
     }
 
     const audioEn = document.getElementById('audio-en');
-    const displayEn = document.getElementById('time-audio-en');
-    if (audioEn && displayEn) {
-      audioEn.addEventListener('timeupdate', () => {
-        displayEn.textContent = formatTime(audioEn.currentTime);
-      });
-      audioEn.addEventListener('play', () => {
+    if (audioEn) {
+      audioEn.addEventListener('ended', () => {
         playedEn = true;
+        document.getElementById('status-en').textContent = '✅ Finished';
         checkSubmitEnabled();
       });
-      audioEn.addEventListener('ended', () => {
-        document.getElementById('btn-audio-en').textContent = '►';
-      });
     }
-    // Toggle enable/disable expiry datetime input based on checkbox
-    document.getElementById('no-expired-checkbox').addEventListener('change', function () {
-      const datetimeInput = document.getElementById('expired-datetime');
-      if (this.checked) {
-        datetimeInput.disabled = true;
-        datetimeInput.value = '';
-      } else {
-        datetimeInput.disabled = false;
-      }
-    });
   });
+
+  function resetAudio(lang) {
+    const audio = document.getElementById('audio-' + lang);
+    audio.pause();
+    audio.currentTime = 0;
+    if (lang === 'th') {
+      playedTh = false;
+      document.getElementById('status-th').textContent = '⏸️ ยังไม่เล่น';
+    } else {
+      playedEn = false;
+      document.getElementById('status-en').textContent = '⏸️ Not played';
+    }
+
+    const submitBtn = document.getElementById('submit-button');
+    submitBtn.disabled = true;
+    submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+    submitBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+  }
+
+  function resetPlayback() {
+    const confirmReset = confirm("คุณแน่ใจหรือไม่ว่าต้องการล้างค่าทั้งหมด?");
+    if (!confirmReset) return;
+
+    playedTh = false;
+    playedEn = false;
+
+    document.getElementById('status-th').textContent = '⏸️ ยังไม่เล่น';
+    document.getElementById('status-en').textContent = '⏸️ Not played';
+
+    const submitBtn = document.getElementById('submit-button');
+    submitBtn.disabled = true;
+    submitBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+    submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+
+    // Reset audio
+    document.getElementById('audio-th').pause();
+    document.getElementById('audio-th').currentTime = 0;
+    document.getElementById('audio-en').pause();
+    document.getElementById('audio-en').currentTime = 0;
+
+    // Clear textareas
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(area => area.value = '');
+
+    // Reset datetime input
+    const dateInput = document.querySelector('input[type="datetime-local"]');
+    if (dateInput) dateInput.value = '';
+  }
 </script>
 </body>
 </html>
